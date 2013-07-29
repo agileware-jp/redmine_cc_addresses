@@ -42,9 +42,9 @@ Redmine::Plugin.register :redmine_cc_addresses do
   description 'Allows CC Addresses to be attached to an issue'
   version '0.2.0'
 
-  project_module :cc_addresses do |map|    
+  project_module :cc_addresses do |map|
     map.permission :view_cc_addresses, { }
     map.permission :add_cc_addresses, { :cc_addresses => :create }
-    map.permission :delete_cc_addresses, { :cc_addresses => :destroy }    
+    map.permission :delete_cc_addresses, { :cc_addresses => :destroy }
   end
 end
