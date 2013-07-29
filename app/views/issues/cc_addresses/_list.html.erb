@@ -10,17 +10,16 @@
               </li>
             </td>
             <% if authorize_for('cc_addresses', 'destroy') %>
-              <td style="border: 0; padding: 0;">
-                <%= link_to_remote(image_tag('delete.png'), {
-                  :url => {
+              <td style="border: 0; padding: 0;">                
+                <%= link_to(image_tag('delete.png'),
+                  {
                     :controller => 'cc_addresses',
                     :action => 'destroy',
                     :issue_id => issue,
                     :id => cc_address,
                     :only_path => true
                   },
-                  :method => :post})
-                %>
+                  :method => :post) %>
               </td>
             <% end %>
           </tr>

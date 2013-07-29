@@ -18,13 +18,13 @@ module RedmineCcAddresses
       issue_edit_without_cc_addresses(journal)
       unless journal.do_not_send_cc?
         cc_addresses = issue.cc_addresses.collect {|m| m.mail}
-        cc << cc_addresses
+        headers[:cc] << cc_addresses
       end
     end
     def issue_add_with_cc_addresses(issue)
       issue_add_without_cc_addresses(issue)
       cc_addresses = issue.cc_addresses.collect {|m| m.mail}
-      cc << cc_addresses
+      headers[:cc] << cc_addresses
     end
   end
 end

@@ -3,7 +3,7 @@ require 'redmine'
 # Patches to the Redmine core.
 require 'dispatcher'
 
-Dispatcher.to_prepare :redmine_cc_addresses do
+ActionDispatch::Callbacks.to_prepare do
   require_dependency 'cc_addresses_issue_show_hook'
   require_dependency 'redmine_cc_addresses/hooks/view_issues_edit_notes_bottom_hook'
   require_dependency 'redmine_cc_addresses/hooks/controller_issues_edit_before_save_hook'
@@ -26,7 +26,7 @@ Dispatcher.to_prepare :redmine_cc_addresses do
     MailHandler.send(:include, RedmineCcAddresses::MailHandlerPatch)
   end
 
-  config_file = RAILS_ROOT + '/config/tickets.yml'
+  config_file = Rails.root + '/config/tickets.yml'
   if File.file?(config_file)
     config = YAML::load_file(config_file)
     if config.is_a?(Hash) && config.has_key?(Rails.env)
@@ -42,9 +42,9 @@ Redmine::Plugin.register :redmine_cc_addresses do
   description 'Allows CC Addresses to be attached to an issue'
   version '0.2.0'
 
-  project_module :cc_addresses do |map|
+  project_module :cc_addresses do |map|    
     map.permission :view_cc_addresses, { }
     map.permission :add_cc_addresses, { :cc_addresses => :create }
-    map.permission :delete_cc_addresses, { :cc_addresses => :destroy }
+    map.permission :delete_cc_addresses, { :cc_addresses => :destroy }    
   end
 end

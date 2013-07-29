@@ -10,7 +10,7 @@
   <p><strong><%= l(:field_cc_addresses) %></strong></p>
   <%= render :partial => 'issues/cc_addresses/list', :locals => {:issue => @issue} %>
 
-  <% remote_form_for(:new_address, @cc_address, 
+  <%= form_for(:new_address,
        :url => {:controller => :cc_addresses, :action => :create, :issue_id => @issue },
        :method => :post,
        :html => {:id => 'new-cc-address-form', :style => (@cc_address ? '' : 'display: none;')}) do |f| %>

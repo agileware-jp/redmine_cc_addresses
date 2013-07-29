@@ -4,7 +4,7 @@ class CcAddressesController < ApplicationController
   unloadable
 
   def create
-    @cc_address = CcAddress.new(params[:new_address])
+    @cc_address = CcAddress.new(params[:new_address])    
     respond_to do |format|
       if @cc_address.save
         format.html { redirect_to :controller => 'issues', :action => 'show', :id => @issue }
@@ -33,18 +33,10 @@ class CcAddressesController < ApplicationController
       cc_address.destroy
       @issue.reload
     end
+
     respond_to do |format|
       format.html { redirect_to :controller => 'issues', :action => 'show', :id => @issue }
       format.js { render(:update) { |page| page.replace_html "cc-addresses", :partial => 'issues/cc_addresses', :locals => { :issue => @issue, :project => @project } } }
-    end
-  end
-
-  def new_issue_add_cc
-    @issue = Issue.new
-    @issue.cc_addresses.build
-    respond_to do |format|
-      format.html { render :partial => 'issues/cc_addresses/new_ajax', :locals => { :issue => @issue } }
-      format.js { render(:update) { |page| page.insert_html :bottom, 'div-cc-addresses', :partial => 'issues/cc_addresses/new_ajax', :locals => { :issue => @issue } } }
     end
   end
 

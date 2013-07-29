@@ -1,4 +1,6 @@
-<div id="div-cc-addresses">
+<%= javascript_include_tag 'redmine_cc_addresses', plugin: 'redmine_cc_addresses' %>
+
+<div id="div-cc-addresses">	
 <% issue.cc_addresses.build %>
 <%- form.fields_for :cc_addresses do |cc_address_form| %>
   <p>
@@ -6,6 +8,8 @@
   </p>
 <%- end %>
 </div>
-<p>
-  <%= link_to_remote l(:label_add_cc_address), :url  => { :controller => :cc_addresses, :action => :new_issue_add_cc }, :html => { :class => 'icon icon-add' } %>
+<p>	
+	<a class='icon icon-add' id='add-cc-field' data-remote='true' href='#' onClick='javascript:addCcField(); return false;'> 
+	  <%= l(:label_add_cc_address) %>
+	</a>
 </p>
