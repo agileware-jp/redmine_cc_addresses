@@ -4,7 +4,7 @@ class CcAddressesController < ApplicationController
   unloadable
 
   def create
-    @cc_address = CcAddress.new(params[:new_address])    
+    @cc_address = CcAddress.new(params[:new_address])
     respond_to do |format|
       if @cc_address.save
         format.html { redirect_to :controller => 'issues', :action => 'show', :id => @issue }
