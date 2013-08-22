@@ -10,18 +10,18 @@ class TicketMailer < Mailer
                   'Issue-Id' => issue.id,
                   'Issue-Author' => issue.author.login
 
-    from issue.project.email if issue.project.respond_to?(:email)
+    @issue = issue
+    @issue_url = url_for(controller: 'issues', action: 'show', id: issue)
+    @from = issue.project.email if issue.project.respond_to? :email
 
-    message_id issue
-    recipients email
-    subject "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] #{issue.subject}"
-    body :issue => issue,
-         :issue_url => url_for(:controller => 'issues', :action => 'show', :id => issue),
-         :from => from
+    mail(to: email,
+         from: @from,
+         message_id: issue,
+         subject: "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] #{issue.subject}") do |format|
+      format.text
+      format.html
+    end
 
-    content_type "multipart/alternative"
-    part :content_type => "text/plain", :body => render(:file => "new_ticket.text.plain.rhtml", :body => body)
-    part :content_type => "text/html", :body => render_message("new_ticket.text.html.rhtml", body)
   end
 
   class << self

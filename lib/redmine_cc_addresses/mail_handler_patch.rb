@@ -13,9 +13,9 @@ module RedmineCcAddresses
       issue = receive_issue_without_cc_addresses
       addr = email.from_addrs.to_a.first
       if user.anonymous?
-        if addr && !addr.spec.blank?
-          issue.cc_addresses << CcAddress.new(:mail => addr.spec)
-          TicketMailer.deliver_new_ticket(issue, addr.spec)
+        if addr && !addr.blank?
+          issue.cc_addresses << CcAddress.new(mail: addr)
+          TicketMailer.deliver_new_ticket(issue, addr)
         end
       else
         TicketMailer.deliver_new_ticket(issue, user.mail)
