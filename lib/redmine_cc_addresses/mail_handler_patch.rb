@@ -15,10 +15,10 @@ module RedmineCcAddresses
       if user.anonymous?
         if addr && !addr.blank?
           issue.cc_addresses << CcAddress.new(mail: addr)
-          TicketMailer.deliver_new_ticket(issue, addr)
+          TicketMailer.new_ticket(issue, addr).deliver
         end
       else
-        TicketMailer.deliver_new_ticket(issue, user.mail)
+        TicketMailer.new_ticket(issue, user.mail).deliver
       end
       issue
     end

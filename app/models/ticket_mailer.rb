@@ -1,4 +1,4 @@
-class TicketMailer < Mailer
+class TicketMailer < ActionMailer::Base
   layout false
 
   def new_ticket(issue, email)
@@ -6,22 +6,34 @@ class TicketMailer < Mailer
       headers[k] = v
     end
 
-    redmine_headers 'Project' => issue.project.identifier,
-                  'Issue-Id' => issue.id,
-                  'Issue-Author' => issue.author.login
-
     @issue = issue
     @issue_url = url_for(controller: 'issues', action: 'show', id: issue)
     @from = issue.project.email if issue.project.respond_to? :email
 
-    mail(to: email,
-         from: @from,
-         message_id: issue,
-         subject: "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] #{issue.subject}") do |format|
+    headers = {}
+    headers.merge! 'Project' => issue.project.identifier,
+                  'Issue-Id' => issue.id,
+                  'Issue-Author' => issue.author.login,
+                  'X-Mailer' => 'Redmine',
+                  'X-Redmine-Host' => Setting.host_name,
+                  'X-Redmine-Site' => Setting.app_title,
+                  'X-Auto-Response-Suppress' => 'OOF',
+                  'Auto-Submitted' => 'auto-generated',
+                  'List-Id' => "<#{Setting.mail_from.to_s.gsub('@', '.')}>"
+
+    headers[:to] = email
+    headers[:from] = @from
+    headers[:subject] = "[#{@issue.project.name} - #{@issue.tracker.name} ##{@issue.id}] #{@issue.subject}"
+    headers[:message_id] = issue
+
+    mail headers do |format|
       format.text
       format.html
     end
+  end
 
+  def self.default_url_options
+    { :host => Setting.host_name, :protocol => Setting.protocol }
   end
 
   class << self
