@@ -10,6 +10,21 @@ class TicketMailer < ActionMailer::Base
     @issue_url = url_for(controller: 'issues', action: 'show', id: issue)
     @from = issue.project.email if issue.project.respond_to? :email
 
+    headers = default_headers_for_issue issue
+
+    headers[:to] = email
+    headers[:from] = @from
+    headers[:subject] = "[#{issue.project.name} - #{issue.tracker.name} ##{issue.id}] #{issue.subject}"
+    headers[:message_id] = issue
+
+    mail headers do |format|
+      format.text
+      format.html
+    end
+
+  end
+
+  def default_headers_for_issue issue
     headers = {}
     headers.merge! 'Project' => issue.project.identifier,
                   'Issue-Id' => issue.id,
@@ -21,21 +36,11 @@ class TicketMailer < ActionMailer::Base
                   'Auto-Submitted' => 'auto-generated',
                   'List-Id' => "<#{Setting.mail_from.to_s.gsub('@', '.')}>"
 
-    headers[:to] = email
-    headers[:from] = @from
-    headers[:subject] = "[#{@issue.project.name} - #{@issue.tracker.name} ##{@issue.id}] #{@issue.subject}"
-    headers[:message_id] = issue
-
-    mail headers do |format|
-      format.text
-      format.html
-    end
+    headers
   end
+  private :default_headers_for_issue
 
-  def self.default_url_options
-    { :host => Setting.host_name, :protocol => Setting.protocol }
-  end
-
+  # TicketMailer self class
   class << self
     def new_ticket_headers=(headers)
       @new_ticket_headers = headers if headers.is_a? Hash
@@ -43,6 +48,10 @@ class TicketMailer < ActionMailer::Base
 
     def new_ticket_headers
       @new_ticket_headers || []
+    end
+
+    def default_url_options
+      { :host => Setting.host_name, :protocol => Setting.protocol }
     end
   end
 end
