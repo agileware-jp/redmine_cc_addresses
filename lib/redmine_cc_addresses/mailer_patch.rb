@@ -5,7 +5,7 @@ module RedmineCcAddresses
       # Same as typing in the class
       base.send(:include, MailerInstanceMethods)
       base.class_eval do
-  unloadable
+        unloadable
         alias_method_chain :issue_edit, :cc_addresses
         alias_method_chain :issue_add, :cc_addresses
       end
@@ -21,6 +21,7 @@ module RedmineCcAddresses
         headers[:cc] << cc_addresses
       end
     end
+
     def issue_add_with_cc_addresses(issue, recipients, cc)
       issue_add_without_cc_addresses(issue, recipients, cc)
       cc_addresses = issue.cc_addresses.collect {|m| m.mail}

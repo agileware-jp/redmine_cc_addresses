@@ -10,7 +10,7 @@
               </li>
             </td>
             <% if authorize_for('cc_addresses', 'destroy') %>
-              <td style="border: 0; padding: 0;">                
+              <td style="border: 0; padding: 0;">
                 <%= link_to(image_tag('delete.png'),
                   {
                     :controller => 'cc_addresses',
@@ -19,7 +19,7 @@
                     :id => cc_address,
                     :only_path => true
                   },
-                  :method => :post) %>
+                  :method => :delete) %>
               </td>
             <% end %>
           </tr>
