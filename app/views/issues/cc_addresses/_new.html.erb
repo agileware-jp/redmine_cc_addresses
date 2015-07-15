@@ -1,15 +1,17 @@
-<%= javascript_include_tag 'redmine_cc_addresses', plugin: 'redmine_cc_addresses' %>
+<% if @project.module_enabled?('cc_addresses') && User.current.allowed_to?(:add_cc_addresses, @project) && @issue.new_record? %>
+  <%= javascript_include_tag 'redmine_cc_addresses', plugin: 'redmine_cc_addresses' %>
 
-<div id="div-cc-addresses">	
-<% issue.cc_addresses.build %>
-<%- form.fields_for :cc_addresses do |cc_address_form| %>
+  <div id="div-cc-addresses">
+    <% issue.cc_addresses.build %>
+    <% form.fields_for :cc_addresses do |cc_address_form| %>
+      <p>
+        <%= cc_address_form.text_field :mail, :size => 50, :label => 'CC Address' %>
+      </p>
+    <% end %>
+  </div>
   <p>
-    <%= cc_address_form.text_field :mail, :size => 50, :label => 'CC Address' %>
+    <a class='icon icon-add' id='add-cc-field' data-remote='true' href='#' onClick='javascript:addCcField(); return false;'>
+      <%= l(:label_add_cc_address) %>
+    </a>
   </p>
-<%- end %>
-</div>
-<p>	
-	<a class='icon icon-add' id='add-cc-field' data-remote='true' href='#' onClick='javascript:addCcField(); return false;'> 
-	  <%= l(:label_add_cc_address) %>
-	</a>
-</p>
+<% end %>

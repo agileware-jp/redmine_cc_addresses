@@ -1,7 +1,7 @@
 class CcAddressesController < ApplicationController
-  before_filter :find_project, :except => [ :new_issue_add_cc ]
-  before_filter :authorize, :except => [ :new_issue_add_cc ]
   unloadable
+  before_filter :find_project
+  before_filter :authorize
 
   def create
     @cc_address = CcAddress.new(params[:new_address])
@@ -29,7 +29,7 @@ class CcAddressesController < ApplicationController
 
   def destroy
     cc_address = CcAddress.find(params[:id])
-    if request.post? && @issue.cc_addresses.include?(cc_address)
+    if request.delete? && @issue.cc_addresses.include?(cc_address)
       cc_address.destroy
       @issue.reload
     end
@@ -40,7 +40,8 @@ class CcAddressesController < ApplicationController
     end
   end
 
-private
+  private
+
   def find_project
     @issue = Issue.find(params[:issue_id])
     @project = @issue.project
