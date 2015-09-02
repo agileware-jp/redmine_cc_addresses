@@ -5,7 +5,7 @@ require_dependency 'redmine_cc_addresses/hooks/view_issues_history_journal_botto
 require_dependency 'redmine_cc_addresses/hooks/view_issues_show_description_bottom_hook'
 
 Redmine::Plugin.register :redmine_cc_addresses do
-  name 'Issue CC Addresses'
+  name 'Issue CC Addresses (Customized by RSD)'
   author 'Nick Peelman'
   description 'Allows CC Addresses to be attached to an issue'
   version '0.2.0'
