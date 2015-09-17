@@ -1,5 +1,5 @@
 <% if @issue.cc_addresses.present? %>
   <p>
-    <label><%= check_box_tag 'do_not_send_cc', '1', true %> Do not send emails to CC addresses</label>
+    <label><%= check_box_tag 'do_not_send_cc', '1', false %> Do not send emails to CC addresses</label>
   </p>
 <% end %>
