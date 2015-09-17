@@ -27,9 +27,9 @@ module RedmineCcAddresses
       cc_addresses = issue.cc_addresses.collect {|m| m.mail}
       headers[cc_or_bcc] << cc_addresses
     end
-  end
 
-  def cc_or_bcc
-    Setting[:bcc_recipients] == "1" ? :bcc : :cc
+    def cc_or_bcc
+      Setting[:bcc_recipients] == "1" ? :bcc : :cc
+    end
   end
 end
